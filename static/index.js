@@ -59,7 +59,33 @@ async function test() {
 
 async function main() {
     await setup();
-    await test();
+    
+    let data = [5, 1, 4, 8, 2];
+    let highlighted = [0]
+    const ws = d3.select(".workspace");
+    
+    ws.selectAll("rect")
+        .data(data)
+        .enter()
+        .append("rect")
+        .attr('x', (d,i) => {
+            return i * AnWinX / data.length;
+        })
+        .attr('y', (d) => {
+            return AnWinY - d / Math.max(...data) * AnWinY;
+        })
+        .attr('width', AnWinX / data.length)
+        .attr('height', (d) => {
+            return d / Math.max(...data) * AnWinY;
+        })
+        .attr('stroke', "#00000000")
+        .attr('fill', textColor);    
+    
+    ws.selectAll("rect")
+        .data(data)
+        .attr("fill", (d,i) => {
+            return highlighted.includes(i) ? highlightColor : textColor;
+        })
 }
 
 main();
